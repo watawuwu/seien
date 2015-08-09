@@ -1,0 +1,39 @@
+mysql:
+  image: watawuwu/percona:5.6
+  ports:
+    - 3306:3306
+  volumes:
+    - middleware/stage/etc/percona5.6:/usr/local/etc/mysql
+    - /data/seien/log/percona5.6:/var/log/mysql
+    - /data/seien/data/percona5.6:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: password
+    MYSQL_ALLOW_EMPTY_PASSWORD: false
+    MYSQL_DATABASE: seien_local
+    MYSQL_USER: seien_user
+    MYSQL_PASSWORD: seien_password
+
+backend:
+  image: watawuwu/sbt/0.13
+  volumes:
+    - middleware/stage/etc/sbt0.13:/opt/sbt/conf
+    - /data/seien/log/app:/var/log/guild
+    - /data/seien/data/app:/var/lib/sbt
+    - /data/seien/data/ivy2:/root/.ivy2
+    - ../:/var/app
+  command:
+    /var/app/tool/stage_launch.sh
+  links:
+    - mysql:mysql
+
+nginx:
+  image: watawuwu/nginx:1.8
+  ports:
+    - 8080:80
+    - 8443:443
+  volumes:
+    - middleware/stage/etc/nginx1.8:/etc/nginx
+    - /data/seien/log/nginx1.8:/var/log/nginx
+  links:
+   - backend:backend
+

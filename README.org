@@ -1,0 +1,17 @@
+# -*- mode: org -*-
+#+TITLE: Seien
+#+AUTHOR: watawuwu
+#+LANGUAGE: en
+#+OPTIONS: H:1 num:nil toc:nil ^:nil author:t creator:nil timestamp:t preamble: \n:t
+[[./logo.png]]
+
+* Overview
+- The "Seien" is the meaning of cheer in English.
+- This application is a virtual application.
+- [[https://github.com/watawuwu/seien-backend][Backend]]:  Functional Programming in Scala.
+- [[https://github.com/watawuwu/seien-frontend][Frontend]]: Mithril(TODO).
+
+* License
+This software is released under the MIT License, see [[./LICENSE][LICENSE]]
+
+

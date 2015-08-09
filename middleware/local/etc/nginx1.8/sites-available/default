@@ -1,0 +1,39 @@
+server {
+    listen 80 default;
+
+    root                 /var/www;
+    charset              utf-8;
+    index                index.php index.html;
+    client_max_body_size 100m;
+
+    set $response_body "";
+
+    body_filter_by_lua '
+        local response_body = string.sub(ngx.arg[1], 1, 1000)
+        ngx.ctx.buffered = (ngx.ctx.buffered or "") .. response_body
+        if ngx.arg[2] then
+          ngx.var.response_body = ngx.ctx.buffered
+        end
+    ';
+
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           30d;
+    }
+
+    location ~ /\. {
+        access_log      off;
+        log_not_found   off;
+        deny            all;
+    }
+
+    location /nginx_status {
+        stub_status       on;
+        access_log        off;
+        if ($allow_ip = 0) { return 404; }
+    }
+
+}
+
+
